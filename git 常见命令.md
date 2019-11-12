@@ -11,23 +11,17 @@ git config --global user.email "xiahan@163.com"
 git init
 ## 添加到本地仓库
 git add .
-```
-
-
-
-# 二：git推送到 github 和 gitee上
-
-```shell
-## 参考 https://blog.csdn.net/zhuzbYR/article/details/99708449
-## 参考 https://www.jianshu.com/p/747e2bb71775
-
-## 添加 gitee 地址
-$ git remote add gitee https://gitee.com/QHbeifang/data.git
-## 查看远程地址
-$ git remote
-gitee
-origin
-## 推送到远程地址
+## 提交
+git commit -m "message"
+## 创建远程地址
+git remote add github https:XXX
+git remote add gitee https:XXX
+## 查看远程仓库
+git remote
+git remote -v
+## 推送到远程仓库
+git push gitee master
+git push github master
 
 ```
 
