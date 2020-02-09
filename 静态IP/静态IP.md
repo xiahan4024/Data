@@ -153,12 +153,18 @@
       firewall-cmd --reload
       ```
 
-    ## 9. 安装vim
+    ## 9. 安装软件
    
       ```shell
    ## 更新yum
    [root@localhost ~]# yum update
+   ## 安装 vim
    [root@localhost Backup]# yum install -y vim
+   
+   ## 安装 rsync
+   [root@hadoop0-110 backup]# yum install -y rsync
+   ## 查看状态
+   [root@hadoop0-110 ~]# systemctl status rsyncd.service
       ```
    
       
@@ -202,7 +208,7 @@
   export PATH=$PATH:$JAVA_HOME/bin
   
   ##重启profile文件
-  [root@localhost Backup]# vim /etc/profile
+  [root@localhost ~]# source /etc/profile
   
   ##验证JDK
   [root@localhost Backup]# java -version
@@ -424,11 +430,195 @@ top
 
 ## 运行 springboot 命令
 nohup java -jar xxx.jar &
+
+## 修改使用者和使用者组
+语法：chown [-cfhvR] [--help] [--version] user[:group] file...
+chown runoob:runoobgroup file1 -R ## 将文件 file1.txt 的拥有者设为 runoob，群体的使用者 runoobgroup : -r 递归文件
+
 ```
 
 
 
+# 九： 安装hadoop
 
+## 1. 解压 hadoop
+
+```shell
+## 解压
+[root@localhost opt]# tar -zxvf /opt/backup/hadoop-2.7.2.tar.gz -C /opt/
+## 获取路径
+[root@localhost hadoop-2.7.2]# pwd
+/opt/hadoop-2.7.2
+## 修改环境变量
+[root@localhost jdk1.8.0_201]# vim /etc/profile
+## 追加
+## hadoop
+export HADOOP_HOME=/opt/hadoop-2.7.2
+export PATH=$PATH:$HADOOP_HOME/bin
+export PATH=$PATH:$HADOOP_HOME/sbin
+## 配置立即生效
+[root@localhost jdk1.8.0_201]# source /etc/profile
+## 查看 hadoop 是否安装成功
+[root@localhost jdk1.8.0_201]# hadoop version
+Hadoop 2.7.2
+Subversion https://git-wip-us.apache.org/repos/asf/hadoop.git -r b165c4fe8a74265c792ce23f546c64604acf0e41
+Compiled by jenkins on 2016-01-26T00:08Z
+Compiled with protoc 2.5.0
+From source with checksum d0fda26633fa762bff87ec759ebe689c
+This command was run using /opt/hadoop-2.7.2/share/hadoop/common/hadoop-common-2.7.2.jar
+## 如果不能用 重启试试
+[root@localhost jdk1.8.0_201]# reboot
+
+
+```
+
+## 2. 克隆 Linux
+
+![](./picture/hadoop/copy1.png)
+
+![](./picture/hadoop/copy2.png)
+
+
+
+```shell
+## 修改相关配置
+## 获取uuid
+[root@localhost ~]# uuidgen ens33
+5b8bba98-3972-4f85-9937-c32771901823
+[root@localhost rules.d]# vim /etc/sysconfig/network-scripts/ifcfg-ens33
+UUID=5b8bba98-3972-4f85-9937-c32771901823  ## 修改之前生成的uuid
+IPADDR=192.168.110.111  ## 修改ip地址
+
+## 修改主机名
+[root@localhost rules.d]# vim /etc/hostname 
+## 修改为
+hadoop1-111
+
+## hots 追加
+[root@xiahan ~]# vim /etc/hosts
+192.168.110.110 hadoop0-110
+192.168.110.111 hadoop1-111
+192.168.110.112 hadoop2-112
+
+```
+
+
+
+## 3. 集群分发脚本
+
+### 1）scp: 安全拷贝	
+
+```shell
+scp    -r          $pdir/$fname              $user@hadoop$host:$pdir/$fname
+
+命令   递归       要拷贝的文件路径/名称    目的用户@主机:目的路径/名称
+
+scp -r /opt/module  root@hadoop102:/opt/module
+
+## 反过来，在112上拷贝111的文件也行
+[root@hadoop1-111 opt]# scp -r root@hadoop0-110:/opt/backup /opt/backup/
+## 中间者，在111上拷贝110的文件到112上
+[root@hadoop1-111 backup]# scp -r root@hadoop0-110:/opt/backup/temp root@hadoop2-112:/opt/backup/
+
+```
+
+### 2) 	rsync   :         远程同步工具  
+
+>rsync主要用于备份和镜像。具有速度快、避免复制相同内容和支持符号链接的优点。
+>
+>rsync和scp区别：用rsync做文件的复制要比scp的速度快，rsync只对差异文件做更新。scp是把所有文件都复制过去。
+
+（1）基本语法
+
+>rsync   -rvl    $pdir/$fname        $user@hadoop$host:$pdir/$fname
+>
+>命令  选项参数  要拷贝的文件路径/名称  目的用户@主机:目的路径/名称
+
+选项参数说明
+| 选项 | 功能         |
+| ---- | ------------ |
+| -r   | 递归         |
+| -v   | 显示复制过程 |
+| -l   | 拷贝符号连接 |
+
+```shell
+[root@hadoop0-110 backup]# rsync temp root@hadoop1-111:/opt/backup/
+```
+
+### 3）群发脚本
+
+```shell
+## 创建文件
+[root@hadoop0-110 ~]# mkdir bin
+[root@hadoop0-110 ~]# cd bin/
+[root@hadoop0-110 bin]# touch xsync
+[root@hadoop0-110 bin]# vim xsync
+## 修改权限
+[root@hadoop0-110 bin]# chmod 777 xsync
+[root@hadoop0-110 bin]# ll
+total 4
+-rwxrwxrwx. 1 root root 514 Nov 29 05:12 xsync
+
+## 使用
+[root@hadoop0-110 ~]# xsync bin/ 
+fname=bin
+pdir=/root
+------------------- hadoop111 --------------
+root@hadoop1-111's password: 
+sending incremental file list
+bin/
+bin/xsync
+
+sent 638 bytes  received 39 bytes  150.44 bytes/sec
+total size is 514  speedup is 0.76
+------------------- hadoop112 --------------
+root@hadoop2-112's password: 
+sending incremental file list
+bin/
+bin/xsync
+
+sent 638 bytes  received 39 bytes  270.80 bytes/sec
+total size is 514  speedup is 0.76
+
+
+## xsync 脚本
+
+#!/bin/bash
+#1 获取输入参数个数，如果没有参数，直接退出
+pcount=$#
+if((pcount==0)); then
+echo no args;
+exit;
+fi
+
+#2 获取文件名称
+p1=$1
+fname=`basename $p1`
+echo fname=$fname
+
+#3 获取上级目录到绝对路径
+pdir=`cd -P $(dirname $p1); pwd`
+echo pdir=$pdir
+
+#4 获取当前用户名称
+user=`whoami`
+
+#5 循环
+for((host=111, i =1; host<113; host++, i++)); do
+        echo ------------------- hadoop$host --------------
+        rsync -rvl $pdir/$fname $user@hadoop$i-$host:$pdir
+done
+
+```
+
+>如果部分不能全局使用 xsync，输入：echo $PATH
+>
+>
+>
+>[root@hadoop1-111 bin]# echo $PATH
+>/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/opt/jdk1.8.0_201/bin:/opt/hadoop-2.7.2/bin:/opt/hadoop-2.7.2/sbin:/root/bin
+>
+>将 xsync 移动到上面的一个文件夹即可使用
 
 
 
