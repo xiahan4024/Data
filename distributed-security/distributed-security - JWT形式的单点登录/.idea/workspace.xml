@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="a409da33-a070-405f-ad04-686b711fa869" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="$PROJECT_DIR$/../../apache-maven-3.5.4" />
+        <option name="userSettingsFile" value="E:\JAVA\Windows\apache-maven-3.5.4\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1XTXBPiEOAuMhuEB6h21JecSCq6" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/distributed-security-uaa/src/main/java/com/xiahan/security/distributed/uaa/config" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.annotationProcessors" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.xiahan.security.distributed.order.config" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\JAVA\Windows\IdeaWorkSpace\distributed-security\distributed-security-uaa\src\main\java\com\xiahan\security\distributed\uaa\config" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.OrderServer">
+    <configuration name="OrderServer" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="distributed-security-order" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.xiahan.security.distributed.order.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.xiahan.security.distributed.order.OrderServer" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UAAServer" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="distributed-security-uaa" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.xiahan.security.distributed.uaa.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.xiahan.security.distributed.uaa.UAAServer" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.OrderServer" />
+        <item itemvalue="Spring Boot.UAAServer" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a409da33-a070-405f-ad04-686b711fa869" name="Default Changelist" comment="" />
+      <created>1581070921827</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1581070921827</updated>
+      <workItem from="1581070923160" duration="170000" />
+      <workItem from="1581071096298" duration="2447000" />
+      <workItem from="1581130911714" duration="7956000" />
+      <workItem from="1581173362248" duration="424000" />
+      <workItem from="1581173842646" duration="784000" />
+      <workItem from="1581174642525" duration="939000" />
+      <workItem from="1581212519809" duration="10492000" />
+      <workItem from="1581256344685" duration="78000" />
+      <workItem from="1581259452908" duration="252000" />
+      <workItem from="1581335709785" duration="2649000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="699" y="142" key="#Custom_Plugin_Repositories" timestamp="1581173561769">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="699" y="142" key="#Custom_Plugin_Repositories/0.0.1920.1040@0.0.1920.1040" timestamp="1581173561769" />
+    <state x="699" y="142" key="#HTTP_Proxy" timestamp="1581173399753">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="699" y="142" key="#HTTP_Proxy/0.0.1920.1040@0.0.1920.1040" timestamp="1581173399753" />
+    <state x="552" y="179" key="#Notifications" timestamp="1581174708597">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="552" y="179" key="#Notifications/0.0.1920.1040@0.0.1920.1040" timestamp="1581174708597" />
+    <state x="676" y="362" key="#com.intellij.codeInsight.template.impl.EditVariableDialog" timestamp="1581072899288">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="676" y="362" key="#com.intellij.codeInsight.template.impl.EditVariableDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1581072899288" />
+    <state x="408" y="445" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1581162664347">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="408" y="445" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1581162664347" />
+    <state x="694" y="210" key="FileChooserDialogImpl" timestamp="1581174616713">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="694" y="210" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1581174616713" />
+    <state width="1877" height="307" key="GridCell.Tab.0.bottom" timestamp="1581338979985">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="307" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1581338979985" />
+    <state width="1877" height="307" key="GridCell.Tab.0.center" timestamp="1581338979985">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="307" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1581338979985" />
+    <state width="1877" height="307" key="GridCell.Tab.0.left" timestamp="1581338979984">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="307" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1581338979984" />
+    <state width="1877" height="307" key="GridCell.Tab.0.right" timestamp="1581338979985">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="307" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1581338979985" />
+    <state width="1877" height="307" key="GridCell.Tab.1.bottom" timestamp="1581338979986">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="307" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1581338979986" />
+    <state width="1877" height="307" key="GridCell.Tab.1.center" timestamp="1581338979985">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="307" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1581338979985" />
+    <state width="1877" height="307" key="GridCell.Tab.1.left" timestamp="1581338979985">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="307" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1581338979985" />
+    <state width="1877" height="307" key="GridCell.Tab.1.right" timestamp="1581338979985">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="307" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1581338979985" />
+    <state x="152" y="71" width="1292" height="766" key="SettingsEditor" timestamp="1581174970284">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="152" y="71" width="1292" height="766" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1581174970284" />
+    <state x="681" y="261" width="582" height="524" key="StructurePopup" timestamp="1581174875688">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="681" y="261" width="582" height="524" key="StructurePopup/0.0.1920.1040@0.0.1920.1040" timestamp="1581174875688" />
+    <state x="334" y="215" key="new project wizard" timestamp="1581071671912">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="334" y="215" key="new project wizard/0.0.1920.1040@0.0.1920.1040" timestamp="1581071671912" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1581337795634">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1581337795634" />
+  </component>
+</project>

@@ -22,6 +22,11 @@ git remote -v
 ## 推送到远程仓库
 git push gitee master
 git push github master
+## 查看和git版本库有什么不同，可以查看修改了什么内容，查看difference
+git diff
+## 查看提交日志
+git log
+
 
 ```
 
