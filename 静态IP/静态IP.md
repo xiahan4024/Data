@@ -283,23 +283,24 @@ docker images ## 查看镜像
 docker search redis ## 查看redis
 docker pull redis ## 拉取redis
 docker rmi <image id> ## 删除镜像
-docker ps ##查看运行中的容器
+docker ps ## 查看运行中的容器
 docker ps -a ## 查看所有的容器，包括停止
 
 docker run ## 启动一个新容器
-docker start <CONTAINER ID> ##启动某个停止运行的容器
-docker stop <CONTAINER ID> ##停止容器
+docker start <CONTAINER ID> ## 启动某个停止运行的容器
+docker stop <CONTAINER ID> ## 停止容器
 docker rm <CONTAINER ID> ## 删除容器
-docker ps -q ##查看运行中的 CONTAINER ID
+docker ps -q ## 查看运行中的 CONTAINER ID
 docker ps -a -q ## 查看所有的 CONTAINER ID
 docker stop $(docker ps -a -q) ## 停止所有的容器
 
-docker logs <CONTAINER ID> ##查看docker容器运行日志
+docker logs <CONTAINER ID> ## 查看docker容器运行日志
+docker exec -it containerID /bin/bash  ## 进入容器交互  containerID:镜像ID
 
-##mysql为例
+## mysql为例
 docker run -p 3306:3306 --name mysql -v /opt/mysql/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=xiahan -d --privileged=true mysql:5.7
 
-##解释命令
+## 解释命令
 -p 3306:3306：将容器3306映射到主机3306
 --name mysql：容器取名
 -v /opt/mysql/data:/var/lib/mysql：将主机的/opt/mysql/data挂载到容器/var/lib/mysql中
@@ -390,6 +391,351 @@ docker.io/redis     latest              de25a81a5a0b        2 weeks ago         
 
 后面有时间补齐这个文档
 ```
+
+
+
+# 七：docker 安装 nginx
+
+```shell
+## 查询docker nginx
+[root@localhost ~]# docker search nginx
+## 拉取最新的nginx
+[root@localhost ~]# docker pull nginx
+## 查看下载镜像
+[root@localhost ~]# docker images
+REPOSITORY           TAG                 IMAGE ID            CREATED             SIZE
+docker.io/nginx      latest              2073e0bcb60e        2 weeks ago         127 MB
+docker.io/rabbitmq   management          8bdbe10dc73e        3 months ago        180 MB
+docker.io/mysql      5.7                 cd3ed0dfff7e        4 months ago        437 MB
+docker.io/redis      latest              de25a81a5a0b        4 months ago        98.2 MB
+## 运行nginx
+[root@localhost ~]# docker run -p 8083:80 -d --name nginx --privileged=true nginx
+cf68f099af75587247c70b63b50c767f0632d7fb3a1f616224619ac2dc631644
+## 浏览器访问 http://192.168.110.100:8083/
+效果如下图
+
+## 创建nginx文件夹  -p 创建多个文件夹
+[root@localhost ~]# mkdir -p /opt/nginx/conf
+[root@localhost ~]# mkdir -p /opt/nginx/www
+[root@localhost ~]# mkdir -p /opt/nginx/logs
+## 复制配置文件 /etc/nginx/. 文件夹下的所有，但不会复制nginx这个文件夹   docker exec -it containerID /bin/bash  ## 进入容器交互  containerID:镜像ID
+[root@localhost nginx]# docker cp -a nginx:/etc/nginx/. /opt/nginx/conf/
+cp -a 保留原文件属性的前提下复制文件,使得复制之后的目录和原目录完全一样包括文件权限
+## 修改配置文件
+## 修改 http 设置
+[root@localhost conf]# vim /opt/nginx/conf/nginx.conf  
+## 修改 server 设置
+[root@localhost conf]# vim /opt/nginx/conf/conf.d/default.conf
+#再启动
+[root@localhost conf]# docker run -p 8083:80 --name nginx --privileged=true -v /opt/nginx/www:/usr/share/nginx/html -v /opt/nginx/conf/:/etc/nginx -v /opt/nginx/logs:/var/log/nginx -d nginx
+
+#-p 8083:80：将容器的80端口映射到主机的8083端口
+#--name nginx：将容器命名为nginx
+#-v /home/nginx/www:/usr/share/nginx/html：将主机中当前目录下的www挂载到容器的/usr/share/nginx/html
+#-v /opt/nginx/conf/:/etc/nginx：将主机中当前目录下的nginx.conf挂载到容的/etc/nginx/nginx.conf
+#-v /opt/nginx/logs:/var/log/nginx：将主机中当前目录下的logs挂载到容器的/var/log/nginx
+
+## 修改主机域名映射
+C:\Windows\System32\drivers\etc 添加 IP URL
+
+```
+
+![测试nginx是否启动](./picture/nginx/testNginx1.jpg)
+
+```shell
+## vim /opt/nginx/conf/nginx.conf  
+
+user  nginx;
+worker_processes  1;
+
+error_log  /var/log/nginx/error.log warn;
+pid        /var/run/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  /var/log/nginx/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    keepalive_timeout  65;
+
+    #gzip  on;
+
+    include /etc/nginx/conf.d/*.conf;
+}
+# vim /opt/nginx/conf/conf.d/default.conf
+server {
+    listen       80;
+    server_name  localhost;
+
+    ssi on;  ## 开启 SSI 服务
+    ssi_silent_errors on;   ## SSI 不输出找不到页面错误信息 
+
+
+    #charset koi8-r;
+    #access_log  /var/log/nginx/host.access.log  main;
+
+    location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+    }
+
+    #error_page  404              /404.html;
+
+    # redirect server error pages to the static page /50x.html
+    #
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+
+    # proxy the PHP scripts to Apache listening on 127.0.0.1:80
+    #
+    #location ~ \.php$ {
+    #    proxy_pass   http://127.0.0.1;
+    #}
+
+    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+    #
+    #location ~ \.php$ {
+    #    root           html;
+    #    fastcgi_pass   127.0.0.1:9000;
+    #    fastcgi_index  index.php;
+    #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+    #    include        fastcgi_params;
+    #}
+
+    # deny access to .htaccess files, if Apache's document root
+    # concurs with nginx's one
+    #
+    #location ~ /\.ht {
+    #    deny  all;
+    #}
+}
+
+
+
+```
+
+# 八：docker  安装  mongo
+
+```shell
+## docker 查询 mongo 
+[root@localhost /]# docker search mongo
+## docker 拉取 mongo
+[root@localhost /]# docker pull mongo
+## 创建 mongo 所需文件夹
+## 存放数据
+[root@localhost opt]# mkdir -p /opt/mongo/data
+## 日志
+[root@localhost data]# mkdir -p /opt/mongo/logs
+## 配置文件
+[root@localhost data]# mkdir -p /opt/mongo/conf
+## 
+[root@localhost opt]# mkdir -p /opt/mongo/data/db
+[root@localhost opt]# mkdir -p /opt/mongo/data/configdb
+
+## docker 安装 mongo
+[root@localhost mongo]# docker run --name mongo -p 27017:27017 --privileged=true -v /opt/mongo/data/db:/data/db -v /opt/mongo/data/configdb:/data/configdb -v /etc/localtime:/etc/localtime --restart=always -d mongo --auth
+## 以 admin 用户身份进入mongo
+[root@localhost mongo]# docker exec -it  90a330ba457e  mongo admin
+## 创建一个 admin 管理员账号  在 admin 集合下创建
+> db.createUser({ user: 'admin', pwd: 'xiahan...', roles: [ { role: "userAdminAnyDatabase", db: "admin" } ] });
+Successfully added user: {
+	"user" : "admin",
+	"roles" : [
+		{
+			"role" : "userAdminAnyDatabase",
+			"db" : "admin"
+		}
+	]
+}
+> exit
+
+
+docker run --name mongo -p 27018:27017 --privileged=true -v /opt/mongo/data/db:/data/db -v /opt/mongo/data/configdb:/data/configdb -v /etc/localtime:/etc/localtime --restart=always -d mongo
+
+
+```
+
+## mongo 常见指令
+
+```shell
+## 查看所有的集合
+> show dbs	
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+## 切换数据库/创建数据库  新创建的数据库不显示，需要至少包括一个集合。
+use mongo 
+## 显示当前的数据库
+> db
+switched to db mongo
+## 创建集合 student
+## db.createCollection(name, options)
+## name: 新创建的集合名称
+## options: 创建参数(可缺少)
+> db.createCollection("student")
+{ "ok" : 1 }
+## 删除数据库，先切换数据库 use DATABASE_NAME
+> use mongo 
+> db.dropDatabase() 
+## 删除集合
+db.collection.drop()
+例子：
+db.student.drop() ## 删除student集合
+## 创建角色  角色是基于数据库，所以创建的时候在对应的数据库下创建
+> use admin
+> db.auth('admin', 'xiahan...')
+> use mongo
+> db.createUser({ user: 'mongo', pwd: 'mongo', roles: [ { role: "root", db: "mongo" } ] });
+Successfully added user: {
+	"user" : "mongo",
+	"roles" : [
+		{
+			"role" : "readWrite",
+			"db" : "mongo"
+		}
+	]
+}
+## 删除用户 mongo （删除用户必须由账号管理员来删，所以，切换到admin角色）
+db.system.users.remove({user:"mongo"})  ## 目前并没有成功，不知为啥
+
+## 创建集合、文档等
+show dbs
+use mongo 
+db.auth('mongo', 'mongo')
+db.createCollection('student')
+db.student.insert({'name':'xiahan', 'age':'110'})
+db.student.insert({'name':'小名', 'age':'11'})
+db.student.insert({'name':'小刚', 'age':'10'})
+db.student.insert({'name':'小红', 'age':'119'})
+
+## 查找所有
+> db.getCollection("student").find({})
+{ "_id" : ObjectId("5e4d2bb94fe62b01d0640196"), "name" : "xiahan", "age" : "110" }
+{ "_id" : ObjectId("5e4d2ea81ce67b0699054611"), "name" : "小名", "age" : "11" }
+{ "_id" : ObjectId("5e4d2ea91ce67b0699054612"), "name" : "小刚", "age" : "10" }
+{ "_id" : ObjectId("5e4d2eb41ce67b0699054613"), "name" : "小红", "age" : "119" }
+## 更新某一条
+> db.student.update({"name":"小名"},{"name":"北京小名","age":10})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.getCollection("student").find({})
+{ "_id" : ObjectId("5e4d2bb94fe62b01d0640196"), "name" : "xiahan", "age" : "110" }
+{ "_id" : ObjectId("5e4d2ea81ce67b0699054611"), "name" : "北京小名", "age" : 10 }
+{ "_id" : ObjectId("5e4d2ea91ce67b0699054612"), "name" : "小刚", "age" : "10" }
+{ "_id" : ObjectId("5e4d2eb41ce67b0699054613"), "name" : "小红", "age" : "119" }
+
+
+
+```
+
+```shell
+5.1 内置角色
+数据库用户角色
+read: 只读数据权限
+readWrite:学些数据权限
+数据库管理角色
+dbAdmin: 在当前db中执行管理操作的权限
+dbOwner: 在当前db中执行任意操作
+userADmin: 在当前db中管理user的权限
+备份和还原角色
+backup
+restore
+夸库角色
+readAnyDatabase: 在所有数据库上都有读取数据的权限
+readWriteAnyDatabase: 在所有数据库上都有读写数据的权限
+userAdminAnyDatabase: 在所有数据库上都有管理user的权限
+dbAdminAnyDatabase: 管理所有数据库的权限
+集群管理
+clusterAdmin: 管理机器的最高权限
+clusterManager: 管理和监控集群的权限
+clusterMonitor: 监控集群的权限
+hostManager: 管理Server
+超级权限
+root: 超级用户
+
+作者：yandaren
+链接：https://www.jianshu.com/p/62736bff7e2e
+来源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
+
+
+
+# 九： node win安装
+
+```shell
+## 官网地址，下载 LTS 稳定版本 zip
+https://nodejs.org/en/download/
+## 解压 ZIP
+## 新建两个目录
+	node-npm-global :npm全局安装位置
+	node-npm-cache：npm 缓存路径
+## 添加 node.exe 所在的目录到 环境变量
+## 检测版本安装
+
+## 查看 npm 配置
+## npm：远程下载所依赖的 js
+ npm config ls
+## npm 默认管理包路径：C:/用户/[用户名]/AppData/Roming/npm/node_meodules
+
+
+## 那么node-npm-global :npm全局安装位置，node-npm-cache：npm 缓存路径 又是怎么与npm发生关系呢？
+## 在 node.exe 所在的文件夹下之下下面的命令
+	npm config set prefix "E:\JAVA\Windows\node\node-npm-global"
+	npm config set cache "E:\JAVA\Windows\node\node-npm-cache"
+	
+## 安装 cnpm
+## 在 node.exe 所在的文件夹下之下下面的命令
+	npm install -g cnpm --registry=https://registry.npm.taobao.org
+## 检测 cnmp 版本
+	cnpm -v
+## 安装 nrm
+	cnpm install -g nrm
+## 切换镜像到taobao
+	nrm use taobao
+## 安装 webpack
+	全局安装：
+		npm install webpack -g 或 cnpm install webpack -g
+		npm install webpack@3.6.0 -g或 cnpm install webpack@3.6.0 -g
+	本地安装：
+		npm install --save-dev webpack 或 cnpm install --save-dev webpack
+		npm install --save-dev webpack-cli (4.0以后的版本需要安装webpack-cli)
+		cnpm install --save-dev webpack@3.6.0
+		
+```
+
+## 1. win 下解压
+
+![node安装界面](./picture/node/zip-index.png)
+
+## 2. 环境变量
+
+![环境变量配置](./picture/node/win-path.png)
+
+## 3. 检测安装
+
+![node -v](./picture/node/node-v.png)
+
+![node安装界面](./picture/node/cnmp-v.png)
+
+![node安装界面](./picture/node/nrm-use-taobao.png)
+
+![node安装界面](./picture/node/webpack.png)
 
 
 

@@ -40,7 +40,7 @@ Ctrl+T	快速显示当前类的继承结构
 
 # Idea快捷键
 
-```java
+```shell
 Ctrl+Shift + Enter，语句完成
 “！”，否定完成，输入表达式时按 “！”键
 Ctrl+E，最近的文件
@@ -55,7 +55,7 @@ Alt+Q，可以看到当前方法的声明
 Ctrl+P，可以显示参数信息
 Ctrl+Shift+Insert，可以选择剪贴板内容并插入
 Alt+Insert，可以生成构造器/Getter/Setter等
-Ctrl+Alt+V，可以引入变量。例如：new String(); 自动导入变量定义
+Ctrl+Alt+V，可以引入变量。例如：new String(); ## 自动导入变量定义 alt shift l
 Ctrl+Alt+T，可以把代码包在一个块内，例如：try/catch
 Ctrl+Enter，导入包，自动修正
 Ctrl+Alt+L，格式化代码
