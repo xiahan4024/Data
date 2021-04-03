@@ -184,7 +184,20 @@
    
        
    
-   11. 其他的后续再补充
+   11. 更换 yum 源
+   
+       ```shell
+       ## 1. 备份
+       [root@localhost plugins]# mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.Back
+       ## 2. 使用新的 YUM 源
+       [root@localhost plugins]# curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.163.com/.help/CentOS7-Base-163.repo
+       ## 3. 生成新的yum 源
+       [root@localhost plugins]# yum makecache
+       ```
+   
+       
+   
+   12. 其他的后续再补充
 
 # 二：JDK 安装
 
@@ -267,6 +280,18 @@ systemctl status docker #查看docker状态
 ##修改后
 systemctl daemon-reload  ## 重启daemon
 systemctl  restart docker  ##重启docker服务；
+
+## split 大文件分割为小文件 
+## -b 按照文件大小分割 
+## -d 填充数字
+## -a 填充的位数
+## rabb_ 前缀
+[root@localhost ~]# split -b 50M rabbitmq.jar -d  -a 4 rabb_ 
+-rw-r--r--. 1 root root  52428800 Oct 23 04:45 rabb_0000
+-rw-r--r--. 1 root root  52428800 Oct 23 04:45 rabb_0001
+-rw-r--r--. 1 root root  52428800 Oct 23 04:45 rabb_0002
+-rw-r--r--. 1 root root  27850240 Oct 23 04:45 rabb_0003
+-rw-------. 1 root root 185136640 Oct 23 04:37 rabbitmq.jar
 ```
 
 # 四：docker常用命令
@@ -446,7 +471,7 @@ docker.io/redis     latest              de25a81a5a0b        2 weeks ago         
 	开启了 protected-mode 时，如果你既没有显示的定义了 bind,监听的地址，同时又没有设置 auth 密码。那你只能通过 127.0.0.1 来访问 redis 服务
 3. appendonly no         702行左右 持久化改为：appendonly yes
 4. #requirepass foobared   510行左右，设置redis密码
-5. daemonize:yes		redis后台运行，改为no，退出界面就kill掉进程
+5. daemonize:yes		改为no. yes意为以守护进程方式启动，可后台运行，除非kill进程，改为yes会使配置文件方式启动redis失败
 ```
 ## 3. tar.gz安装redis
 
